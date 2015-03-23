@@ -108,4 +108,12 @@ if [ "$IRONIC_BOOT_OPTION" = "local" ]; then
     if [ $ret -eq 0 ]; then
          echo "Bootloader successfully installed"
     fi
+
+    # NOTE(lucasagomes): This is for local boot to work with VMs, when
+    # the boot option is changed on virsh the configuration doesn't get
+    # applied until the VM is shutdown. So we have to power off it here
+    # at the end and Ironic will power the machine on again when sync'ing
+    # the power state.
+    poweroff -f
+
 fi
